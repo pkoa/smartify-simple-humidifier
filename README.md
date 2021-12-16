@@ -16,4 +16,4 @@ This project makes use of two microcontrollers:
 It sends the collected data to firebase, which acts as both database- and website- host.</br>
 The website pulls data from open weatherapis(openweatherapi and yr) to display and consider when controlling the humidifier.</br>
 There is also the posibility to add schedules based on the collected data, as well as plans to add smart scheduling based on weatherforecasts and machine learning</br>
-The current website design looks like this: ![website](images/website.png)</br>
+The current website design looks like this: </br>![website](images/website.png)</br>
