@@ -15,7 +15,7 @@ The website can then be used to send instructions to the humidifier via the seco
 For the future of this project I want to add the ability to create and edit schedules for the humidifier based on the data collected. I also plan to add "smart" scheduling based on weather forecasts with the help of YRs forecast api. </br>
 There could also come a point where I add machine learning to this project, but I think thats ways away and since there are open apis with forecasts out there I will stick to using these instead.</br></br>
 The current website design looks like this: </br>![website](images/website.png)</br>
-### Used components
+## Used components
 This project makes use of two microcontrollers: 
 * one ESP32 to collect temperature and humidity data with a DHT11 sensor.
 
@@ -27,3 +27,10 @@ The ESP8266 was used as the other because I had an extra lying around, if I had 
 I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information about the humidifier to ensure that if would be safe.</br></br>
 
 I used firebase because:::
+
+## Installation
+### Prerequisits
+Way of uploading code to the microcontrollers - I used Arduino IDE</br>
+[guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
+Installation of [firebase-esp](https://github.com/mobizt/Firebase-ESP-Client) </br>
+Nodejs and firebase-tools installed</br>
