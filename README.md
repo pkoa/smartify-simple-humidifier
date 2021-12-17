@@ -14,7 +14,7 @@ The website pulls data from the database and open weatherapis(openweatherapi and
 The website can then be used to send instructions to the humidifier via the second microcontroller</br>
 For the future of this project I want to add the ability to create and edit schedules for the humidifier based on the data collected. I also plan to add "smart" scheduling based on weather forecasts with the help of YRs forecast api. </br>
 There could also come a point where I add machine learning to this project, but I think thats ways away and since there are open apis with forecasts out there I will stick to using these instead.</br></br>
-The current website design looks like this: </br>![website](images/website.png)</br>
+</br>![website](images/website.png)</br>
 ## Used components
 This project makes use of two microcontrollers: 
 * one ESP32 to collect temperature and humidity data with a DHT11 sensor.
@@ -24,13 +24,27 @@ The DHT11 sensor was used since I'am also quite familiar with it and for this ho
 * one ESP8266 to control the humidifier using an IR led.
 
 The ESP8266 was used as the other because I had an extra lying around, if I had another ESP32 I would have used that instead.</br>
-I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information about the humidifier to ensure that if would be safe.</br></br>
+I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information, no datasheet for example, about the humidifier to ensure that installing it would be safe.</br></br>
 
-I used firebase because:::
+I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#example-usage) between the different systems intrigued me.</br>
+
+YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
+Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
+
+## How
 
 ## Installation
 ### Prerequisits
 Way of uploading code to the microcontrollers - I used Arduino IDE</br>
 [guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
-Installation of [firebase-esp](https://github.com/mobizt/Firebase-ESP-Client) </br>
-Nodejs and firebase-tools installed</br>
+[firebase-esp](https://github.com/mobizt/Firebase-ESP-Client) for connection to firebase</br>
+Nodejs and [firebase-tools](https://www.npmjs.com/package/firebase-tools?activeTab=readme) installed and a firebase project, free tier works well for this project</br>
+## Example usage
+### Firebase
+Firestore, database, example usage in javascript.
+```Javascript
+firebase.firestore().collection('collection-id').doc('document-id').get(doc =>	{
+	console.log(doc.data())
+	//do things with doc.data() in here
+	});
+```
