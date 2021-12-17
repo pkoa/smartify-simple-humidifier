@@ -22,6 +22,22 @@ The website can then be used to send instructions to the humidifier via the seco
 For the future of this project I want to add the ability to create and edit schedules for the humidifier based on the data collected. I also plan to add "smart" scheduling based on weather forecasts with the help of YRs forecast api. </br></br>
 There could also come a point where I add machine learning to this project, but I think thats ways away and since there are open apis with forecasts out there I will stick to using these instead.</br></br>
 </br>![website](images/website.png)</br>
+
+## How I created this project
+This project makes use of two microcontrollers: 
+* one ESP32 to collect temperature and humidity data with a DHT11 sensor.
+
+I chose to use the ESP32 as the collector of data since its easy to work with and I am familiar with using it. </br>
+The DHT11 sensor was used since I'am also quite familiar with it and for this home project I don't need anything more accurate than what it offers.</br>
+* one ESP8266 to control the humidifier using an IR led.
+
+The ESP8266 was used as the other because I had an extra lying around, if I had another ESP32 I would have used that instead.</br>
+I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information, no datasheet of its components, about the humidifier to ensure that installing it would be safe.</br>
+
+I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#example-usage) between the database and website intrigued me.</br>
+
+YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
+Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
 ## Using the project
 How to get started using the project.
 ### Prerequisits
@@ -36,6 +52,8 @@ Firebase project, free tier works well for this project</br>
 Add an email user in the firebase project, used to send data from esp.</br>
 
 Create an account on [openweathermap](https://openweathermap.org/api) for their api key</br>
+
+
 
 ### Installation
 Install the prerequisits</br>
@@ -76,7 +94,7 @@ and go to the given website, it defaults to project-name.web.app</br>
 
 Now you are up and running!
 ## Example usage
-Forking the project with your own code.
+If you would want to add your own code.
 ### Firebase
 Firestore, database, example usage in javascript.
 ```Javascript
@@ -125,21 +143,6 @@ Changing [IR codes](#Getting-IR-codes)
 #define POWER 0x000123
 ...
 ```
-## Used components
-This project makes use of two microcontrollers: 
-* one ESP32 to collect temperature and humidity data with a DHT11 sensor.
 
-I chose to use the ESP32 as the collector of data since its easy to work with and I am familiar with using it. </br>
-The DHT11 sensor was used since I'am also quite familiar with it and for this home project I don't need anything more accurate than what it offers.</br>
-* one ESP8266 to control the humidifier using an IR led.
-
-The ESP8266 was used as the other because I had an extra lying around, if I had another ESP32 I would have used that instead.</br>
-I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information, no datasheet for example, about the humidifier to ensure that installing it would be safe.</br>
-
-I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#example-usage) between the different systems intrigued me.</br>
-
-YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
-Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
-
-## Hur jag gick till väga
-
+## License
+The MIT License (MIT) //addmore
