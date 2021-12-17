@@ -64,7 +64,8 @@ git clone https://github.com/pkoa/simple-humidifier.git
 ```
 </br>
 
-Add an email user in the firebase project.[add-a-user](images/add-a-user.png)</br>
+Add an email user in the firebase project.
+![add-a-user](images/add-a-user.png)</br>
 
 Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 ```C
