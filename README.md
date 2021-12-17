@@ -1,7 +1,8 @@
-# simple-humidifier
+# smartify-simple-humidifier
 *Gives smart control over your dumb humidifier💧*
 
 ## Overview
+Project overview.
 ### Background
 This project was born out of a want and need to automate the humidity in my room.</br>
 
@@ -22,6 +23,7 @@ For the future of this project I want to add the ability to create and edit sche
 There could also come a point where I add machine learning to this project, but I think thats ways away and since there are open apis with forecasts out there I will stick to using these instead.</br></br>
 </br>![website](images/website.png)</br>
 ## Using the project
+How to get started using the project.
 ### Prerequisits
 Way of uploading code to the microcontrollers - I used Arduino IDE [guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
 
@@ -74,6 +76,7 @@ and go to the given website, it defaults to project-name.web.app</br>
 
 Now you are up and running!
 ## Example usage
+Forking the project with your own code.
 ### Firebase
 Firestore, database, example usage in javascript.
 ```Javascript
