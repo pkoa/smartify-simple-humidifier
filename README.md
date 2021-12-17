@@ -4,7 +4,13 @@
 ## Overview
 ### Background
 This project was born out of a want and need to automate the humidity in my room.</br>
-I have eczema which gets really bad during the cold, dry months. To combat this I bought a fan/humidifier that would cool down the room during the summer and humidify the room during the winter. This worked well during the summer, mostly since I left the machine on day and night, however during the winter leaving it on dayround wasn't an option. I wanted more granular control over the humidifier, with the ability to schedule depending on humidity or temperature, but the remote that came with it was quite basic and the device itself was not smart.</br>
+
+I have eczema which gets really bad during the cold, dry months. To combat this I bought a fan/humidifier that would cool down the room during the summer and humidify the room during the winter.</br>
+
+The solution worked well during the summer, mostly since I left the machine on day and night, however during the winter leaving it on dayround wasn't an option. </br>
+
+I wanted more granular control over the humidifier, with the ability to schedule depending on humidity or temperature, but the remote that came with it was quite basic and the device itself was not smart.</br>
+
 So instead going through the pain of either buying a new humidifier with the functionallity I wanted or getting used to checking the current humidity and using the basic remote to control the device every time, I created this project.
 ### How does it work?
 ![flowchart](images/simple-humidifier-flow.png)</br>
@@ -28,6 +34,20 @@ Firebase project, free tier works well for this project</br>
 Add an email user in the firebase project, used to send data from esp.</br>
 
 Create an account on [openweathermap](https://openweathermap.org/api) for their api key</br>
+
+To use the website connect it to your firebase account and then your firebase project. After that you can view the website using:
+```bash
+firebase serve
+```
+and go to the given localhost address, it defaults to localhost:5000</br>
+
+Currently deploying the website breaks the controls over the humidifier, since the webserver uses http and the website gets deployed in https. If you still want to try deploying it use:
+```bash
+firebase deploy
+```
+and go to the given website, it defaults to project-name.web.app</br>
+
+
 ### Installation
 Install the prerequisits</br>
 
@@ -53,6 +73,7 @@ Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 Create a collection in firestore called 'apikeys', add a document called 'OpenWeater' with a field 'key' where the value is a string of your apikey from openweathermap, it can take a couple of hours for them to work after you request one.</br>
 ![collection-example](images/openweatherapi.png)
 
+Now you are up and running!
 ## Example usage
 ### Firebase
 Firestore, database, example usage in javascript.
@@ -63,7 +84,18 @@ firebase.firestore().collection('collection-id').doc('document-id').get(doc =>	{
 	/*	Do things with doc.data() here.*/
 	});
 ```
+</br>
 
+Api handling example
+```Javascript
+/* Get the document.*/
+fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`)
+.then(res => res.json())
+.then(data =>{
+	console.log(data)
+	/*	Do things with data here*/
+	})
+```
 ## Used components
 This project makes use of two microcontrollers: 
 * one ESP32 to collect temperature and humidity data with a DHT11 sensor.
