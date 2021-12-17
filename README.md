@@ -1,11 +1,6 @@
 # simple-humidifier
 *Gives smart control over your dumb humidifier💧*
 
-## Table of contents
-[1. Overview](#Overview)
--[1.1 Background](#Background)
--[1.2 How does it work?](#How-does-it-work?)
-[2. Using the project](#Using-the-project)
 ## Overview
 ### Background
 This project was born out of a want and need to automate the humidity in my room.</br>
