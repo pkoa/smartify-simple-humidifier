@@ -35,19 +35,6 @@ Add an email user in the firebase project, used to send data from esp.</br>
 
 Create an account on [openweathermap](https://openweathermap.org/api) for their api key</br>
 
-To use the website connect it to your firebase account and then your firebase project. After that you can view the website using:
-```bash
-firebase serve
-```
-and go to the given localhost address, it defaults to localhost:5000</br>
-
-Currently deploying the website breaks the controls over the humidifier, since the webserver uses http and the website gets deployed in https. If you still want to try deploying it use:
-```bash
-firebase deploy
-```
-and go to the given website, it defaults to project-name.web.app</br>
-
-
 ### Installation
 Install the prerequisits</br>
 
@@ -72,6 +59,18 @@ Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 
 Create a collection in firestore called 'apikeys', add a document called 'OpenWeater' with a field 'key' where the value is a string of your apikey from openweathermap, it can take a couple of hours for them to work after you request one.</br>
 ![collection-example](images/openweatherapi.png)
+
+To use the website connect it to your firebase account and then your firebase project. After that you can view the website using:
+```bash
+firebase serve
+```
+and go to the given localhost address, it defaults to localhost:5000</br>
+
+Currently deploying the website breaks the controls over the humidifier, since the webserver uses http and the website gets deployed in https. If you still want to try deploying it use:
+```bash
+firebase deploy
+```
+and go to the given website, it defaults to project-name.web.app</br>
 
 Now you are up and running!
 ## Example usage
