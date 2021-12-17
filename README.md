@@ -31,14 +31,30 @@ I used firebase because firebase's features of hosting website, database, I use 
 YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
 Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
 
-## How
+## Hur jag gick till väga
 
-## Installation
+## Getting the project
 ### Prerequisits
-Way of uploading code to the microcontrollers - I used Arduino IDE</br>
-[guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
-[firebase-esp](https://github.com/mobizt/Firebase-ESP-Client) for connection to firebase</br>
-Nodejs and [firebase-tools](https://www.npmjs.com/package/firebase-tools?activeTab=readme) installed and a firebase project, free tier works well for this project</br>
+Way of uploading code to the microcontrollers - I used Arduino IDE [guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
+[firebase-esp](https://github.com/mobizt/Firebase-ESP-Client#installation) for connection to firebase</br>
+[Nodejs](https://nodejs.org/en/download/) and [firebase-tools](https://www.npmjs.com/package/firebase-tools?activeTab=readme) installed and a firebase project, free tier works well for this project</br>
+### Installation
+Install the prerequisits</br>
+
+Clone this repo
+```git clone https://github.com/pkoa/simple-humidifier.git
+```
+
+Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
+```C
+/*	example file.*/
+#define WIFI_SSID "ssid-here"
+#define WIFI_PASSWORD "password-here"
+#define API_KEY "firebase-project-api-key-here"
+#define FIREBASE_PROJECT_ID "firebase-project-id-here"
+#define USER_EMAIL "firebase-project-registered-email-here"
+#define USER_PASSWORD "firebase-project-registered-password-here"
+```
 ## Example usage
 ### Firebase
 Firestore, database, example usage in javascript.
