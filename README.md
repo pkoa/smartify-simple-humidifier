@@ -35,24 +35,23 @@ One ESP8266 to control the humidifier using an IR led.
 The ESP8266 was used as the other because I had an extra lying around, if I had another ESP32 I would have used that instead.</br>
 I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information, no datasheet of its components, about the humidifier to ensure that installing it would be safe.</br>
 ### Hosting
-I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#firebase) between the database and website intrigued me.</br>
+I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#firebase) between the database and website intrigued me.</br> 
+For this project it works well to use the free tier, since we dont need to read and write a lot with only one ESP collecting data. The project is scalable if we ever need to upgrade however.
 ### Apis
 YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
 Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
 ## Using the project
 How to get started using the project.
 ### Prerequisits
-Way of uploading code to the microcontrollers - I used Arduino IDE [guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
+* A way of uploading code to the microcontrollers - I used Arduino IDE [guide to get started](https://dronebotworkshop.com/esp32-intro/)</br>
 
-[Firebase-esp](https://github.com/mobizt/Firebase-ESP-Client#installation) for connection to firebase</br>
+* [Firebase-esp](https://github.com/mobizt/Firebase-ESP-Client#installation) for connection to firebase</br>
 
-[Nodejs](https://nodejs.org/en/download/) and [firebase-tools](https://www.npmjs.com/package/firebase-tools?activeTab=readme) installed.</br>
+* [Nodejs](https://nodejs.org/en/download/) and [firebase-tools](https://www.npmjs.com/package/firebase-tools?activeTab=readme) installed.</br>
 
-Firebase project, free tier works well for this project</br>
+* A firebase project, free tier works well for this project</br>
 
-Add an email user in the firebase project, used to send data from esp.</br>
-
-Create an account on [openweathermap](https://openweathermap.org/api) for their api key</br>
+* An account on [openweathermap](https://openweathermap.org/api) for their api key (free)</br>
 
 
 
@@ -64,6 +63,8 @@ Clone this repo
 git clone https://github.com/pkoa/simple-humidifier.git
 ```
 </br>
+
+Add an email user in the firebase project.[add-a-user](images/add-a-user.png)</br>
 
 Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 ```C
