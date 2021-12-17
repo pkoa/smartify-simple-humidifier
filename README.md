@@ -69,7 +69,7 @@ Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 </br>
 
 Create a collection in firestore called 'apikeys', add a document called 'OpenWeater' with a field 'key' where the value is a string of your apikey from openweathermap, it can take a couple of hours for them to work after you request one.</br>
-[collection-example](images/openweatherapi.png)
+![collection-example](images/openweatherapi.png)
 
 ## Example usage
 ### Firebase
