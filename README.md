@@ -5,7 +5,7 @@
 ### Background
 This project was born out of a want and need to automate the humidity in my room.</br>
 
-I have eczema which gets really bad during the cold, dry months. To combat this I bought a fan/humidifier that would cool down the room during the summer and humidify the room during the winter.</br>
+I have eczema which gets really bad during the cold, dry months. To combat this I bought a fan/humidifier, COOL116CWT, that would cool down the room during the summer and humidify the room during the winter.</br>
 
 The solution worked well during the summer, mostly since I left the machine on day and night, however during the winter leaving it on dayround wasn't an option. </br>
 
