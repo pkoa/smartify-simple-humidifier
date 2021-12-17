@@ -88,7 +88,7 @@ firebase.firestore().collection('collection-id').doc('document-id').get(doc =>	{
 ```
 </br>
 
-Api handling example
+Api handling example in javascript
 ```Javascript
 /* Get the document.*/
 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}&units=metric`)
@@ -97,6 +97,33 @@ fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apikey}
 	console.log(data)
 	/*	Do things with data here*/
 	})
+```
+
+### Esp32
+Changing document path
+```C
+/*...*/
+
+String documentPath = "collection/collection/" + String(documentName)
+
+/*...*/
+```
+</br>
+
+Sending other types of data.
+```C
+/*...*/
+
+content.set("fields/dataName/dataType", variableWithData);
+
+/*...*/
+```
+
+### Esp8266
+Changing [IR codes](#Getting-IR-codes)
+```C
+#define POWER 0x000123
+...
 ```
 ## Used components
 This project makes use of two microcontrollers: 
