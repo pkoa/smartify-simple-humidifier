@@ -52,7 +52,8 @@ Install the prerequisits</br>
 Clone this repo
 ```bash
 git clone https://github.com/pkoa/simple-humidifier.git
-```</br>
+```
+</br>
 
 Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 ```C
@@ -64,7 +65,8 @@ Add a 'passwords.h' file in ESP8266-humidifier-handler and esp32-firebase-dht11
 /*	Added user from prerequisits.*/
 #define USER_EMAIL "firebase-project-registered-email-here"
 #define USER_PASSWORD "firebase-project-registered-password-here"
-```</br>
+```
+</br>
 
 Create a collection in firestore called 'apikeys', add a document called 'OpenWeater' with a field 'key' where the value is a string of your apikey from openweathermap, it can take a couple of hours for them to work after you request one.</br>
 
