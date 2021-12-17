@@ -24,18 +24,19 @@ There could also come a point where I add machine learning to this project, but 
 </br>![website](images/website.png)</br>
 
 ## How I created this project
-This project makes use of two microcontrollers: 
-* one ESP32 to collect temperature and humidity data with a DHT11 sensor.
+### Microcontrollers
+I used one ESP32 to collect temperature and humidity data with a DHT11 sensor.
 
 I chose to use the ESP32 as the collector of data since its easy to work with and I am familiar with using it. </br>
 The DHT11 sensor was used since I'am also quite familiar with it and for this home project I don't need anything more accurate than what it offers.</br>
-* one ESP8266 to control the humidifier using an IR led.
+
+One ESP8266 to control the humidifier using an IR led.
 
 The ESP8266 was used as the other because I had an extra lying around, if I had another ESP32 I would have used that instead.</br>
 I chose to use an IR led and not to put the microcontroller directly in the machine because I didn't have enough information, no datasheet of its components, about the humidifier to ensure that installing it would be safe.</br>
-
+### Hosting
 I used firebase because firebase's features of hosting website, database, I use firestore in this project, and the ability to have stateless functions with good [interactablilty](#example-usage) between the database and website intrigued me.</br>
-
+### Apis
 YR was used as apis because they usually has good accurate weather data where I live, and their api was easy to get started with.</br>
 Openweatherapi was used for their ability to both get weather data and to translate a city to long lat which was needed to get data from YR.
 ## Using the project
