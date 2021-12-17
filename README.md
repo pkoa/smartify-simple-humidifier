@@ -3,8 +3,8 @@
 
 ## Table of contents
 [1. Overview](#Overview)
-* [1.1 Background](#Background)
-* [1.2 How does it work?](#How-does-it-work?)
+-[1.1 Background](#Background)
+-[1.2 How does it work?](#How-does-it-work?)
 [2. Using the project](#Using-the-project)
 ## Overview
 ### Background
