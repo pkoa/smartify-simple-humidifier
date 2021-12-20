@@ -17,9 +17,9 @@ So instead going through the pain of either buying a new humidifier with the fun
 ![flowchart](images/simple-humidifier-flow.png)</br>
 
 The collector sends the collected data to firebase, which acts as both database- and website- host.</br></br>
-The website pulls data from the database and open weatherapis(openweatherapi and yr). These can be used to give an overview of how the humidity will rise or fall and can be taken into consideration when controlling the humidifier.</br></br>
-The website can then be used to send instructions to the humidifier via the second microcontroller</br></br>
-For the future of this project I want to add the ability to create and edit schedules for the humidifier based on the data collected. I also plan to add "smart" scheduling based on weather forecasts with the help of YRs forecast api. </br></br>
+The website pulls data from the database and open weatherapis(openweatherapi and yr). These can be used to give an overview of how the humidity will rise or fall and can be taken into consideration when controlling the humidifier.</br>
+The website can then be used to send instructions to the humidifier via the second microcontroller.</br></br>
+For the future of this project I want to add the ability to create and edit schedules for the humidifier based on the data collected. I also plan to add "smart" scheduling based on weather forecasts with the help of YRs forecast api. </br>
 There could also come a point where I add machine learning to this project, but I think thats ways away and since there are open apis with forecasts out there I will stick to using these instead.</br></br>
 </br>![website](images/website.png)</br>
 
