@@ -146,6 +146,3 @@ Changing [IR codes](#Getting-IR-codes)
 #define POWER 0x000123
 ...
 ```
-
-## License
-The MIT License (MIT) //addmore
