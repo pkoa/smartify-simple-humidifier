@@ -25,16 +25,13 @@ document.addEventListener("DOMContentLoaded",event =>{
         const data = doc.data();
         apikey = data.key;
     })
-    /*
-    const db = firebase.firestore()
-    const myPost = db.collection('posts').doc('9yaoJZQ68QLSFfoNCeD6')
-    let table = document.getElementById('tabledata')
-    
-    myPost.onSnapshot(doc =>{
-            const data = doc.data()
-            //document.write(data.awoooga)
-            table.innerHTML += `<tr class="table-dark"><td>${data.awoooga}</td><td>${data.views}</td>`
-    })*/
+    const myPost2 = firebase.firestore().collection('esp-controller').doc('wantedstate');
+    myPost2.get().then(doc =>{
+        const data = doc.data();
+        console.log(data);
+        //document.write(data);
+    })
+
     refresh()
     window.setInterval('refresh()', 10000);
 
@@ -51,7 +48,6 @@ async function refreshOthers(){
     }
     else{
         clearInterval(setIntervalListener)
-        console.log('CLEAREDD')
     }
 }
 
@@ -145,6 +141,8 @@ async function getState(){
     document.getElementById("timerbutton").disabled = true;
     document.getElementById("ionizerbutton").disabled = true;
 
+    /*use database instead*/
+
     await fetch(`http://${localIp}/state`)
     .then(res => res.json())
     .then(data =>{
@@ -152,10 +150,28 @@ async function getState(){
         if(data.power == 1){
             document.getElementById("showbutton").className = "btn btn-secondary"
             document.getElementById("showbutton").innerHTML = "Power On"
+
+            document.getElementById("levelbutton").style.visibility = "visible";
+            document.getElementById("humiditybutton").style.visibility = "visible";
+            document.getElementById("modebutton").style.visibility = "visible";
+            document.getElementById("swingbutton").style.visibility = "visible";
+            document.getElementById("timerbutton").style.visibility = "visible";
+            document.getElementById("ionizerbutton").style.visibility = "visible";
+
         }
         else{
             document.getElementById("showbutton").className = "btn btn-outline-secondary"
             document.getElementById("showbutton").innerHTML = "Power Off"
+            document.getElementById("showbutton").disabled = false;
+
+            document.getElementById("levelbutton").style.visibility = "hidden";
+            document.getElementById("humiditybutton").style.visibility = "hidden";
+            document.getElementById("modebutton").style.visibility = "hidden";
+            document.getElementById("swingbutton").style.visibility = "hidden";
+            document.getElementById("timerbutton").style.visibility = "hidden";
+            document.getElementById("ionizerbutton").style.visibility = "hidden";
+
+            return;
         }
         document.getElementById("showbutton").disabled = false;
         

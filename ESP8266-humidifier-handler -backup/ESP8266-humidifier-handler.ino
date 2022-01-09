@@ -15,8 +15,6 @@
 #include <IRremoteESP8266.h>
 #include <IRutils.h>
 #include <IRsend.h>
-#include <Firebase_ESP_Client.h>
-#include <addons/TokenHelper.h>
 #include "passwords.h"
 
 /*
@@ -66,156 +64,6 @@ void updateEeprom(){
   EEPROM.commit();
 }
 
-/*
-  Used to update the state
-*/
-void updateState(String wantedState){
-  
-  if(wantedState.indexOf("power: 1") >= 0 && state.power == 0){
-    irsend.sendNEC(POWER, 32);
-    state.power = 1;
-    updatedState = 1;
-  }
-  else if(wantedState.indexOf("power: 0") >= 0 && state.power == 1){
-    if(state.hum == 1){
-      irsend.sendNEC(POWER, 32);
-      delay(50);
-      irsend.sendNEC(POWER, 32);
-      delay(50);
-    }
-    irsend.sendNEC(POWER, 32);
-    
-    state.power = 0;
-    state.hum = 0;
-    state.level = 0;
-    state.mde = 0;
-    state.swing = 0;
-    state.timer = 0;
-    state.ionizer = 0;
-
-    updatedState = 1;
-  }
-  
-  if(state.power == 1){
-    if(wantedState.indexOf("level: 0") >= 0){
-      if(state.level == 0){
-        //level 0 times
-      }
-      if(state.level == 1){
-        //level 2 times
-        updatedState = 1;
-      }
-      if(state.level == 2){
-        //level 1 times
-        updatedState = 1;
-      }
-    }
-    else if(wantedState.indexOf("level: 1") >= 0){
-      if(state.level == 0){
-        //level 1 times
-        updatedState = 1;
-      }
-      if(state.level == 1){
-        //level 0 times
-      }
-      if(state.level == 2){
-        // level 2 times
-        updatedState = 1;
-      }
-    }
-    else if(wantedState.indexOf("level: 2") >= 0){
-      if(state.level == 0){
-        //level 2 times
-        updatedState = 1;
-      }
-      if(state.level == 1){
-        //level 1 times
-        updatedState = 1;
-      }
-      if(state.level == 2){
-        //level 0 times
-      }
-    }
-
-    if(wantedState.indexOf("hum: 1") >= 0 && state.hum == 0){
-      updatedState = 1;
-    }
-    else if(wantedState.indexOf("hum: 0") >= 0 && state.hum == 1){
-      updatedState = 1;
-    }
-
-    if(wantedState.indexOf("mode: 0") >= 0){
-      if(state.mde == 0){
-        //mde 0 times
-      }
-      if(state.mde == 1){
-        //mde 2 times
-        updatedState = 1;
-      }
-      if(state.mde == 2){
-        //mde 1 times
-        updatedState = 1;
-      }
-    }
-    else if(wantedState.indexOf("mode: 1") >= 0){
-      if(state.mde == 0){
-        //mde 1 times
-        updatedState = 1;
-      }
-      if(state.mde == 1){
-        //mde 0 times
-      }
-      if(state.mde == 2){
-        // mde 2 times
-        updatedState = 1;
-      }
-    }
-    else if(wantedState.indexOf("mode: 2") >= 0){
-      if(state.mde == 0){
-        //mde 2 times
-        updatedState = 1;
-      }
-      if(state.mde == 1){
-        //mde 1 times
-        updatedState = 1;
-      }
-      if(state.mde == 2){
-        //mde 0 times
-      }
-    }
-    
-    if(wantedState.indexOf("swing: 1") >= 0 && state.swing == 0){
-      updatedState = 1;
-    }
-    else if(wantedState.indexOf("swing: 0") >= 0 && state.swing == 1){
-      updatedState = 1;
-    }
-
-    /*timer tänk lite*/
-
-    if(wantedState.indexOf("ionizer: 1") >= 0 && state.ionizer == 0){
-      updatedState = 1;
-    }
-    else if(wantedState.indexOf("ionizer: 0") >= 0 && state.ionizer == 1){
-      updatedState = 1;
-    }
-   }
-  
-}
-
-/*
-  Firebase objects
-*/
-FirebaseData fbdo;
-
-FirebaseAuth auth;
-FirebaseConfig config;
-
-bool taskCompleted = false;
-int updatedState = 0;
-
-unsigned long dataMillis = 0;
-
 void setup(){
   /*  Establishes serial communication.*/
   Serial.begin(115200);
@@ -239,74 +87,10 @@ void setup(){
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
   
-  Serial.printf("Firebase Client v%s\n\n", FIREBASE_CLIENT_VERSION);
-  
-  /* Assigning the api key, user information and callbackfunction */
-  config.api_key = API_KEY;
-  auth.user.email = USER_EMAIL;
-  auth.user.password = USER_PASSWORD;
-  config.token_status_callback = tokenStatusCallback;
-  
-  Firebase.begin(&config, &auth);
-  Firebase.reconnectWiFi(true);
-  
   server.begin();
-  updatedState = 1;
 }
 
 void loop(){
-  /*
-    Update firebase
-  */
-  if(Firebase.ready() && updatedState == 1){
-    /*
-      Update firebase.state
-    */
-    FirebaseJson content;
-    String documentPath = "esp-controller/state";
-
-    content.clear();
-    content.set("fields/power/integerValue", state.power);
-    content.set("fields/level/integerValue", state.level);
-    content.set("fields/hum/integerValue", state.hum);
-    content.set("fields/mode/integerValue", state.mde);
-    content.set("fields/swing/integerValue", state.swing);
-    content.set("fields/timer/integerValue", state.timer);
-    content.set("fields/ionizer/integerValue", state.ionizer);
-
-    Serial.print("Updating document");
-    if (Firebase.Firestore.patchDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), content.raw(), "count,status")){
-      Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-    }
-    else{
-      Serial.println(fbdo.errorReason());
-    }
-    updatedState = 0;
-  }
-  /*
-    Get wantedState
-  */
-  if(Firebase.ready() && (millis() - dataMillis > 60000 || dataMillis == 0)){
-    dataMillis = millis();
-    
-    String documentPath = "esp-controller";
-    String mask = "wantedstate";
-
-    if(Firebase.Firestore.getDocument(&fbdo, FIREBASE_PROJECT_ID, "", documentPath.c_str(), mask.c_str())){
-      Serial.printf("ok\n%s\n\n", fbdo.payload().c_str());
-      /*
-        Update State
-      */
-      //if(fbdo.payload().indexOf("updated: 1") >= 0){
-        updateState(fbdo.payload());
-      //}
-    }
-    else{
-      Serial.println(fbdo.errorReason());
-    }
-  }
-
-  
   WiFiClient client = server.available();
   
   /*  If client connects.*/
