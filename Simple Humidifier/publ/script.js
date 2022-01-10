@@ -50,16 +50,16 @@ document.addEventListener("DOMContentLoaded",event =>{
     firebase.firestore().collection('esp-controller').doc('state')
     .onSnapshot(doc =>{
         
-        firebase.firestore().collection('esp-controller').doc('wantedstate')
-        .update({ionizer: 0})
-
+        /*
         document.getElementById("showbutton").disabled = true;
         document.getElementById("levelbutton").disabled = true;
         document.getElementById("humiditybutton").disabled = true;
         document.getElementById("modebutton").disabled = true;
         document.getElementById("swingbutton").disabled = true;
         document.getElementById("timerbutton").disabled = true;
-        document.getElementById("ionizerbutton").disabled = true;
+        document.getElementById("ionizerbutton").disabled = true;*/
+
+        disableButtons();
 
         var data = doc.data()
         console.log(data)
@@ -214,14 +214,7 @@ function googleLogin(){
 }
 
 async function fetchData(input){
-    /*var apikey;
-    const db = firebase.firestore();
-    const myPost = db.collection('apikeys').doc('OpenWeather');
-    await myPost.get().then(doc => {
-        const data = doc.data();
-        apikey = data.key;
-    })*/
-    
+   
     fetch(`https://api.openweathermap.org/data/2.5/weather?q=${input.value}&appid=${apikey}&units=metric`)
         .then(res => res.json())
         .then(data => {
@@ -269,6 +262,12 @@ function geoCodingCity(event){
 function localHumUnder(event){
     if(event.which == 13){
         //set hum threshold in db, start hum if under, set timer and shizzle.
+        /**
+         * tier 1
+        */
+        const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
+        
+
     }
 }
 
@@ -362,6 +361,46 @@ async function ionizer(){
         const res = await myPost.update({ionizer: 0});
     }
     
+}
+async function reset(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
+    
+    console.log(currentState)
+    await myPost.update({ionizer: 0});
+    await myPost.update({power: 0});
+    await myPost.update({timer: 0});
+    await myPost.update({swing: 0});
+    await myPost.update({level: 0});
+    await myPost.update({hum: 0});
+    await myPost.update({mode: 0});
+
+    disableButtons();
+}
+
+async function disableButtons(){
+    document.getElementById("showbutton").disabled = true;
+    document.getElementById("levelbutton").disabled = true;
+    document.getElementById("humiditybutton").disabled = true;
+    document.getElementById("modebutton").disabled = true;
+    document.getElementById("swingbutton").disabled = true;
+    document.getElementById("timerbutton").disabled = true;
+    document.getElementById("ionizerbutton").disabled = true;
+    document.getElementById("resetbutton").disabled = true;
+    document.getElementById("resetbutton").disabled = false;
+    
+
+}
+
+async function enableButtons(){
+    document.getElementById("showbutton").disabled = false;
+    document.getElementById("levelbutton").disabled = false;
+    document.getElementById("humiditybutton").disabled = false;
+    document.getElementById("modebutton").disabled = false;
+    document.getElementById("swingbutton").disabled = false;
+    document.getElementById("timerbutton").disabled = false;
+    document.getElementById("ionizerbutton").disabled = false;
+    document.getElementById("resetbutton").disabled = false;
+ 
 }
 
 /* Old method of controlling */
