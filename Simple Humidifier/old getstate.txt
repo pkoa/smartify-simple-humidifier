@@ -1,0 +1,274 @@
+async function getState(){
+    /*
+    document.getElementById("showbutton").disabled = true;
+    document.getElementById("levelbutton").disabled = true;
+    document.getElementById("humiditybutton").disabled = true;
+    document.getElementById("modebutton").disabled = true;
+    document.getElementById("swingbutton").disabled = true;
+    document.getElementById("timerbutton").disabled = true;
+    document.getElementById("ionizerbutton").disabled = true;*/
+
+    /*use database instead*/
+
+    //await fetch(`http://${localIp}/state`)
+    //.then(res => res.json())
+
+    firebase.firestore().collection('esp-controller').doc('state')
+    .get()
+    .then(doc =>{
+        var data = doc.data()
+        console.log(data)
+        if(data.power == 1){
+            document.getElementById("showbutton").className = "btn btn-secondary"
+            document.getElementById("showbutton").innerHTML = "Power On"
+
+            document.getElementById("modebutton").style.visibility = "visible";
+            document.getElementById("humiditybutton").style.visibility = "visible";
+            document.getElementById("modebutton").style.visibility = "visible";
+            document.getElementById("swingbutton").style.visibility = "visible";
+            document.getElementById("timerbutton").style.visibility = "visible";
+            document.getElementById("ionizerbutton").style.visibility = "visible";
+
+        }
+        else{
+            document.getElementById("showbutton").className = "btn btn-outline-secondary"
+            document.getElementById("showbutton").innerHTML = "Power Off"
+            document.getElementById("showbutton").disabled = false;
+            /*
+            document.getElementById("modebutton").style.visibility = "hidden";
+            document.getElementById("humiditybutton").style.visibility = "hidden";
+            document.getElementById("modebutton").style.visibility = "hidden";
+            document.getElementById("swingbutton").style.visibility = "hidden";
+            document.getElementById("timerbutton").style.visibility = "hidden";
+            document.getElementById("ionizerbutton").style.visibility = "hidden";
+
+            return;*/
+        }
+        document.getElementById("showbutton").disabled = false;
+        
+        if(data.level == 1){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 2"
+        }
+        else if(data.level == 2){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 3"
+        }
+        else{
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 1"
+        }
+        document.getElementById("levelbutton").disabled = false;
+
+
+        if(data.humiditiy == 1){
+            document.getElementById("humiditybutton").className = "btn btn-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity On"
+        }
+        else{
+            document.getElementById("humiditybutton").className = "btn btn-outline-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity Off"
+        }
+        document.getElementById("humiditybutton").disabled = false;
+
+
+        if(data.mode == 1){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Breeze"
+        }
+        else if(data.mode == 2){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Sleep"
+        }
+        else{
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Standard"
+        }
+        document.getElementById("modebutton").disabled = false;
+
+
+        if(data.swing == 1){
+            document.getElementById("swingbutton").className = "btn btn-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing On"
+        }
+        else{
+            document.getElementById("swingbutton").className = "btn btn-outline-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing Off"
+        }
+        document.getElementById("swingbutton").disabled = false;
+
+
+        if(data.timer == 1){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 1hr"
+
+        }
+        else if(data.timer == 2){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 2hr"
+
+        }
+        else if (data.timer == 3){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 4hr"
+
+        }
+        else{
+            document.getElementById("timerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer Off"
+
+        }
+        document.getElementById("timerbutton").disabled = false;
+
+        
+        if(data.ionizer == 1){
+            document.getElementById("ionizerbutton").className = "btn btn-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer On"
+
+        }
+        else{
+            document.getElementById("ionizerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer Off"
+            
+        }
+        document.getElementById("ionizerbutton").disabled = false;
+
+    })
+}
+
+async function getState(){
+    /*
+    document.getElementById("showbutton").disabled = true;
+    document.getElementById("levelbutton").disabled = true;
+    document.getElementById("humiditybutton").disabled = true;
+    document.getElementById("modebutton").disabled = true;
+    document.getElementById("swingbutton").disabled = true;
+    document.getElementById("timerbutton").disabled = true;
+    document.getElementById("ionizerbutton").disabled = true;*/
+
+    /*use database instead*/
+
+    //await fetch(`http://${localIp}/state`)
+    //.then(res => res.json())
+
+    firebase.firestore().collection('esp-controller').doc('state')
+    .get()
+    .then(data =>{
+        console.log(data)
+        if(data.power == 1){
+            document.getElementById("showbutton").className = "btn btn-secondary"
+            document.getElementById("showbutton").innerHTML = "Power On"
+
+            document.getElementById("levelbutton").style.visibility = "visible";
+            document.getElementById("humiditybutton").style.visibility = "visible";
+            document.getElementById("modebutton").style.visibility = "visible";
+            document.getElementById("swingbutton").style.visibility = "visible";
+            document.getElementById("timerbutton").style.visibility = "visible";
+            document.getElementById("ionizerbutton").style.visibility = "visible";
+
+        }
+        else{
+            document.getElementById("showbutton").className = "btn btn-outline-secondary"
+            document.getElementById("showbutton").innerHTML = "Power Off"
+            document.getElementById("showbutton").disabled = false;
+
+            document.getElementById("levelbutton").style.visibility = "hidden";
+            document.getElementById("humiditybutton").style.visibility = "hidden";
+            document.getElementById("modebutton").style.visibility = "hidden";
+            document.getElementById("swingbutton").style.visibility = "hidden";
+            document.getElementById("timerbutton").style.visibility = "hidden";
+            document.getElementById("ionizerbutton").style.visibility = "hidden";
+
+            return;
+        }
+        document.getElementById("showbutton").disabled = false;
+        
+        if(data.level == 1){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 2"
+        }
+        else if(data.level == 2){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 3"
+        }
+        else{
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 1"
+        }
+        document.getElementById("levelbutton").disabled = false;
+
+
+        if(data.humiditiy == 1){
+            document.getElementById("humiditybutton").className = "btn btn-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity On"
+        }
+        else{
+            document.getElementById("humiditybutton").className = "btn btn-outline-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity Off"
+        }
+        document.getElementById("humiditybutton").disabled = false;
+
+
+        if(data.mode == 1){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Breeze"
+        }
+        else if(data.mode == 2){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Sleep"
+        }
+        else{
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Standard"
+        }
+        document.getElementById("modebutton").disabled = false;
+
+
+        if(data.swing == 1){
+            document.getElementById("swingbutton").className = "btn btn-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing On"
+        }
+        else{
+            document.getElementById("swingbutton").className = "btn btn-outline-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing Off"
+        }
+        document.getElementById("swingbutton").disabled = false;
+
+
+        if(data.timer == 1){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 1hr"
+
+        }
+        else if(data.timer == 2){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 2hr"
+
+        }
+        else if (data.timer == 3){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 4hr"
+
+        }
+        else{
+            document.getElementById("timerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer Off"
+
+        }
+        document.getElementById("timerbutton").disabled = false;
+
+        
+        if(data.ionizer == 1){
+            document.getElementById("ionizerbutton").className = "btn btn-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer On"
+
+        }
+        else{
+            document.getElementById("ionizerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer Off"
+            
+        }
+        document.getElementById("ionizerbutton").disabled = false;
+
+    })
+}

@@ -11,6 +11,7 @@ const formatter = Intl.NumberFormat('en-US', {
 var setIntervalListener;
 var localIp;
 var apikey;
+var currentState;
 document.addEventListener("DOMContentLoaded",event =>{
     const app = firebase.app();
     console.log(app);
@@ -18,7 +19,7 @@ document.addEventListener("DOMContentLoaded",event =>{
     post.onSnapshot(doc =>{
         const data = doc.data();
         localIp = data.ip;
-        getState();
+        
     })
     const myPost = firebase.firestore().collection('apikeys').doc('OpenWeather');
     myPost.get().then(doc => {
@@ -31,7 +32,12 @@ document.addEventListener("DOMContentLoaded",event =>{
         console.log(data);
         //document.write(data);
     })
-
+    const myPost3 = firebase.firestore().collection('esp-controller').doc('state');
+    myPost3.onSnapshot(doc =>{
+        const data = doc.data();
+        currentState = data;
+        console.log(data)
+    })
     refresh()
     window.setInterval('refresh()', 10000);
 
@@ -39,6 +45,140 @@ document.addEventListener("DOMContentLoaded",event =>{
     if(input.value != ""){
         setIntervalListener = window.setInterval('refreshOthers()', 10000)
     }
+
+
+    firebase.firestore().collection('esp-controller').doc('state')
+    .onSnapshot(doc =>{
+        
+        firebase.firestore().collection('esp-controller').doc('wantedstate')
+        .update({ionizer: 0})
+
+        document.getElementById("showbutton").disabled = true;
+        document.getElementById("levelbutton").disabled = true;
+        document.getElementById("humiditybutton").disabled = true;
+        document.getElementById("modebutton").disabled = true;
+        document.getElementById("swingbutton").disabled = true;
+        document.getElementById("timerbutton").disabled = true;
+        document.getElementById("ionizerbutton").disabled = true;
+
+        var data = doc.data()
+        console.log(data)
+        if(data.power == 1){
+            document.getElementById("showbutton").className = "btn btn-secondary"
+            document.getElementById("showbutton").innerHTML = "Power On"
+
+            document.getElementById("levelbutton").style.visibility = "visible";
+            document.getElementById("humiditybutton").style.visibility = "visible";
+            document.getElementById("modebutton").style.visibility = "visible";
+            document.getElementById("swingbutton").style.visibility = "visible";
+            document.getElementById("timerbutton").style.visibility = "visible";
+            document.getElementById("ionizerbutton").style.visibility = "visible";
+
+        }
+        else{
+            document.getElementById("showbutton").className = "btn btn-outline-secondary"
+            document.getElementById("showbutton").innerHTML = "Power Off"
+            document.getElementById("showbutton").disabled = false;
+            /*
+            document.getElementById("levelbutton").style.visibility = "hidden";
+            document.getElementById("humiditybutton").style.visibility = "hidden";
+            document.getElementById("modebutton").style.visibility = "hidden";
+            document.getElementById("swingbutton").style.visibility = "hidden";
+            document.getElementById("timerbutton").style.visibility = "hidden";
+            document.getElementById("ionizerbutton").style.visibility = "hidden";
+
+            return;*/
+        }
+        document.getElementById("showbutton").disabled = false;
+        
+        if(data.level == 1){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 2"
+        }
+        else if(data.level == 2){
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 3"
+        }
+        else{
+            document.getElementById("levelbutton").className = "btn btn-secondary"
+            document.getElementById("levelbutton").innerHTML = "Level 1"
+        }
+        document.getElementById("levelbutton").disabled = false;
+
+
+        if(data.hum == 1){
+            document.getElementById("humiditybutton").className = "btn btn-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity On"
+        }
+        else{
+            document.getElementById("humiditybutton").className = "btn btn-outline-secondary"
+            document.getElementById("humiditybutton").innerHTML = "Humidity Off"
+        }
+        document.getElementById("humiditybutton").disabled = false;
+
+
+        if(data.mode == 1){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Breeze"
+        }
+        else if(data.mode == 2){
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Sleep"
+        }
+        else{
+            document.getElementById("modebutton").className = "btn btn-secondary"
+            document.getElementById("modebutton").innerHTML = "Mode: Standard"
+        }
+        document.getElementById("modebutton").disabled = false;
+
+
+        if(data.swing == 1){
+            document.getElementById("swingbutton").className = "btn btn-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing On"
+        }
+        else{
+            document.getElementById("swingbutton").className = "btn btn-outline-secondary"
+            document.getElementById("swingbutton").innerHTML = "Swing Off"
+        }
+        document.getElementById("swingbutton").disabled = false;
+
+
+        if(data.timer == 1){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 1hr"
+
+        }
+        else if(data.timer == 2){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 2hr"
+
+        }
+        else if (data.timer == 3){
+            document.getElementById("timerbutton").className = "btn btn-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer: 4hr"
+
+        }
+        else{
+            document.getElementById("timerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("timerbutton").innerHTML = "Timer Off"
+
+        }
+        document.getElementById("timerbutton").disabled = false;
+
+        
+        if(data.ionizer == 1){
+            document.getElementById("ionizerbutton").className = "btn btn-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer On"
+
+        }
+        else{
+            document.getElementById("ionizerbutton").className = "btn btn-outline-secondary"
+            document.getElementById("ionizerbutton").innerHTML = "Ionizer Off"
+            
+        }
+        document.getElementById("ionizerbutton").disabled = false;
+
+    })
 });
 
 async function refreshOthers(){
@@ -132,139 +272,100 @@ function localHumUnder(event){
     }
 }
 
-async function getState(){
-    document.getElementById("showbutton").disabled = true;
-    document.getElementById("levelbutton").disabled = true;
-    document.getElementById("humiditybutton").disabled = true;
-    document.getElementById("modebutton").disabled = true;
-    document.getElementById("swingbutton").disabled = true;
-    document.getElementById("timerbutton").disabled = true;
-    document.getElementById("ionizerbutton").disabled = true;
+async function onOff(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-    /*use database instead*/
+    console.log(currentState.power)
+    if(currentState.power == 0){
+        const res = await myPost.update({power: 1});
+    }
+    else{
+        const res = await myPost.update({power: 0});
+    }
+    
+}
+async function level(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-    await fetch(`http://${localIp}/state`)
-    .then(res => res.json())
-    .then(data =>{
-        console.log(data)
-        if(data.power == 1){
-            document.getElementById("showbutton").className = "btn btn-secondary"
-            document.getElementById("showbutton").innerHTML = "Power On"
+    console.log(currentState.level)
+    if(currentState.level == 0){
+        const res = await myPost.update({level: 1});
+    }
+    else if(currentState.level == 1){
+        const res = await myPost.update({level: 2});
+    }
+    else{
+        const res = await myPost.update({level: 3});
+    }
+    
+}
+async function humidity(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-            document.getElementById("levelbutton").style.visibility = "visible";
-            document.getElementById("humiditybutton").style.visibility = "visible";
-            document.getElementById("modebutton").style.visibility = "visible";
-            document.getElementById("swingbutton").style.visibility = "visible";
-            document.getElementById("timerbutton").style.visibility = "visible";
-            document.getElementById("ionizerbutton").style.visibility = "visible";
+    console.log(currentState.hum)
+    if(currentState.hum == 0){
+        const res = await myPost.update({hum: 1});
+    }
+    else{
+        const res = await myPost.update({hum: 0});
+    }
+    
+}
+async function mode(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-        }
-        else{
-            document.getElementById("showbutton").className = "btn btn-outline-secondary"
-            document.getElementById("showbutton").innerHTML = "Power Off"
-            document.getElementById("showbutton").disabled = false;
+    console.log(currentState.mode)
+    if(currentState.mode == 0){
+        const res = await myPost.update({mode: 1});
+    }
+    else if(currentState.mode == 1){
+        const res = await myPost.update({mode: 2});
+    }
+    else{
+        const res = await myPost.update({mode: 0});
+    }
+    
+}
+async function swing(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-            document.getElementById("levelbutton").style.visibility = "hidden";
-            document.getElementById("humiditybutton").style.visibility = "hidden";
-            document.getElementById("modebutton").style.visibility = "hidden";
-            document.getElementById("swingbutton").style.visibility = "hidden";
-            document.getElementById("timerbutton").style.visibility = "hidden";
-            document.getElementById("ionizerbutton").style.visibility = "hidden";
+    console.log(currentState.swing)
+    if(currentState.swing == 0){
+        const res = await myPost.update({swing: 1});
+    }else{
+        const res = await myPost.update({swing: 0});
+    }
+    
+}
+async function timer(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-            return;
-        }
-        document.getElementById("showbutton").disabled = false;
-        
-        if(data.level == 1){
-            document.getElementById("levelbutton").className = "btn btn-secondary"
-            document.getElementById("levelbutton").innerHTML = "Level 2"
-        }
-        else if(data.level == 2){
-            document.getElementById("levelbutton").className = "btn btn-secondary"
-            document.getElementById("levelbutton").innerHTML = "Level 3"
-        }
-        else{
-            document.getElementById("levelbutton").className = "btn btn-secondary"
-            document.getElementById("levelbutton").innerHTML = "Level 1"
-        }
-        document.getElementById("levelbutton").disabled = false;
+    console.log(currentState.timer)
+    if(currentState.timer == 0){
+        const res = await myPost.update({timer: 1});
+    }
+    else if(currentState.timer == 1){
+        const res = await myPost.update({timer: 2});
+    }
+    else{
+        const res = await myPost.update({timer: 0});
+    }
+    
+}
+async function ionizer(){
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
 
-
-        if(data.humiditiy == 1){
-            document.getElementById("humiditybutton").className = "btn btn-secondary"
-            document.getElementById("humiditybutton").innerHTML = "Humidity On"
-        }
-        else{
-            document.getElementById("humiditybutton").className = "btn btn-outline-secondary"
-            document.getElementById("humiditybutton").innerHTML = "Humidity Off"
-        }
-        document.getElementById("humiditybutton").disabled = false;
-
-
-        if(data.mode == 1){
-            document.getElementById("modebutton").className = "btn btn-secondary"
-            document.getElementById("modebutton").innerHTML = "Mode: Breeze"
-        }
-        else if(data.mode == 2){
-            document.getElementById("modebutton").className = "btn btn-secondary"
-            document.getElementById("modebutton").innerHTML = "Mode: Sleep"
-        }
-        else{
-            document.getElementById("modebutton").className = "btn btn-secondary"
-            document.getElementById("modebutton").innerHTML = "Mode: Standard"
-        }
-        document.getElementById("modebutton").disabled = false;
-
-
-        if(data.swing == 1){
-            document.getElementById("swingbutton").className = "btn btn-secondary"
-            document.getElementById("swingbutton").innerHTML = "Swing On"
-        }
-        else{
-            document.getElementById("swingbutton").className = "btn btn-outline-secondary"
-            document.getElementById("swingbutton").innerHTML = "Swing Off"
-        }
-        document.getElementById("swingbutton").disabled = false;
-
-
-        if(data.timer == 1){
-            document.getElementById("timerbutton").className = "btn btn-secondary"
-            document.getElementById("timerbutton").innerHTML = "Timer: 1hr"
-
-        }
-        else if(data.timer == 2){
-            document.getElementById("timerbutton").className = "btn btn-secondary"
-            document.getElementById("timerbutton").innerHTML = "Timer: 2hr"
-
-        }
-        else if (data.timer == 3){
-            document.getElementById("timerbutton").className = "btn btn-secondary"
-            document.getElementById("timerbutton").innerHTML = "Timer: 4hr"
-
-        }
-        else{
-            document.getElementById("timerbutton").className = "btn btn-outline-secondary"
-            document.getElementById("timerbutton").innerHTML = "Timer Off"
-
-        }
-        document.getElementById("timerbutton").disabled = false;
-
-        
-        if(data.ionizer == 1){
-            document.getElementById("ionizerbutton").className = "btn btn-secondary"
-            document.getElementById("ionizerbutton").innerHTML = "Ionizer On"
-
-        }
-        else{
-            document.getElementById("ionizerbutton").className = "btn btn-outline-secondary"
-            document.getElementById("ionizerbutton").innerHTML = "Ionizer Off"
-            
-        }
-        document.getElementById("ionizerbutton").disabled = false;
-
-    })
+    console.log(currentState.ionizer)
+    if(currentState.ionizer == 0){
+        const res = await myPost.update({ionizer: 1});
+    }else{
+        const res = await myPost.update({ionizer: 0});
+    }
+    
 }
 
+/* Old method of controlling */
+/*
 async function onOff(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/power`, true);
@@ -274,47 +375,48 @@ async function onOff(){
         ping2.open('GET', `http://${localIp}/IR/RESET`, true);
         await ping2.send();
     }
-    getState();
+    
 }
 async function level(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/level`, true);
     await ping.send();
-    getState();
+    
     
 }
 async function humidity(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/hum`, true);
     await ping.send();
-    getState();
+    
 
 }
 async function mode(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/mode`, true);
     await ping.send();
-    getState();
+    
 
 }
 async function swing(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/swing`, true);
     await ping.send();
-    getState();
+    
 
 }
 async function timer(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/timer`, true);
     await ping.send();
-    getState();
+    
 
 }
 async function ionizer(){
     ping = new XMLHttpRequest();
     ping.open('GET', `http://${localIp}/IR/ionizer`, true);
     await ping.send();
-    getState();
+    
 
 }
+*/
