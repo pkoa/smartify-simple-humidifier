@@ -9,6 +9,7 @@ const formatter = Intl.NumberFormat('en-US', {
 });
 
 var setIntervalListener;
+var humidityIntervalListener;
 var localIp;
 var apikey;
 var currentState;
@@ -46,18 +47,8 @@ document.addEventListener("DOMContentLoaded",event =>{
         setIntervalListener = window.setInterval('refreshOthers()', 10000)
     }
 
-
     firebase.firestore().collection('esp-controller').doc('state')
     .onSnapshot(doc =>{
-        
-        /*
-        document.getElementById("showbutton").disabled = true;
-        document.getElementById("levelbutton").disabled = true;
-        document.getElementById("humiditybutton").disabled = true;
-        document.getElementById("modebutton").disabled = true;
-        document.getElementById("swingbutton").disabled = true;
-        document.getElementById("timerbutton").disabled = true;
-        document.getElementById("ionizerbutton").disabled = true;*/
 
         disableButtons();
 
@@ -259,15 +250,39 @@ function geoCodingCity(event){
         
     }
 }
-function localHumUnder(event){
-    if(event.which == 13){
-        //set hum threshold in db, start hum if under, set timer and shizzle.
-        /**
-         * tier 1
-        */
-        const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
-        
+function localHumUnder(){
 
+    //set hum threshold in db, start hum if under, set timer and shizzle.
+    /**
+     * tier 1
+    */
+    //const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
+    clearInterval(humidityIntervalListener);
+    const input = document.querySelector('input[type="set"]');
+    console.log(input.value);
+    document.getElementById("localunderbutton").className = "btn btn-secondary"
+    document.getElementById("localunderbutton").innerHTML = "Set!"
+    refreshHumidity();
+    humidityIntervalListener = window.setInterval('refreshHumidity()', 120000);
+}
+
+async function refreshHumidity(){
+    const latest = await firebase.firestore().collection('esp1_dht').orderBy('id', 'desc').limit(1).get();
+    const snapshot = latest.docs[0];
+    const data = snapshot.data();
+    const input = document.querySelector('input[type="set"]');
+    
+    const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
+
+    if(data.humidity < input.value){
+        await myPost.update({power: 1});
+        await myPost.update({hum: 1});
+        await myPost.update({swing: 1});
+        pingLocal();
+    }
+    else{
+        reset();
+        clearInterval(humidityIntervalListener)
     }
 }
 
@@ -280,8 +295,9 @@ async function onOff(){
     }
     else{
         const res = await myPost.update({power: 0});
+        reset();
     }
-    
+    pingLocal();
 }
 async function level(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -296,6 +312,7 @@ async function level(){
     else{
         const res = await myPost.update({level: 3});
     }
+    pingLocal();
     
 }
 async function humidity(){
@@ -308,7 +325,7 @@ async function humidity(){
     else{
         const res = await myPost.update({hum: 0});
     }
-    
+    pingLocal();
 }
 async function mode(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -323,7 +340,7 @@ async function mode(){
     else{
         const res = await myPost.update({mode: 0});
     }
-    
+    pingLocal();
 }
 async function swing(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -334,7 +351,7 @@ async function swing(){
     }else{
         const res = await myPost.update({swing: 0});
     }
-    
+    pingLocal();
 }
 async function timer(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -349,7 +366,7 @@ async function timer(){
     else{
         const res = await myPost.update({timer: 0});
     }
-    
+    pingLocal();
 }
 async function ionizer(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -360,7 +377,7 @@ async function ionizer(){
     }else{
         const res = await myPost.update({ionizer: 0});
     }
-    
+    pingLocal();
 }
 async function reset(){
     const myPost = firebase.firestore().collection('esp-controller').doc('wantedstate');
@@ -375,6 +392,15 @@ async function reset(){
     await myPost.update({mode: 0});
 
     disableButtons();
+    pingLocal();
+}
+
+async function pingLocal(){
+    /*ping = new XMLHttpRequest();
+    ping.open('GET', `http://${localIp}`, true);
+    await ping.send();*/
+
+    
 }
 
 async function disableButtons(){
